@@ -11,10 +11,12 @@ export default function Home() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   async function practiceExamEnter() {
-    if (email != "") {
-      await axios.post("");
+    if (email != "" && email == "sharad.natraj@sjsu.edu") {
       router.push("/init");
       return;
+    }
+    if (email != "" && email == "professor@sjsu.edu") {
+      router.push("/prof_dashboard");
     }
     alert("please enter email!");
   }
@@ -26,7 +28,7 @@ export default function Home() {
           Engineering Mgmt.
         </h1>
         <h2 className="md:text-2xl text-xl lg:text-2xl font-bold mt-5">
-          <span className="text-blue-500">practice</span> for the GMAT.
+          exam <span className="text-blue-500">practice.</span>
         </h2>
 
         <div className="w-full absolute inset-0 h-screen">

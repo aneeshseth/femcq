@@ -1,10 +1,4 @@
-import {
-  CardTitle,
-  CardDescription,
-  CardHeader,
-  CardContent,
-  Card,
-} from "@/components/ui/card";
+import { CardTitle, CardHeader, CardContent, Card } from "@/components/ui/card";
 import { ResponsiveBar } from "@nivo/bar";
 
 export default function ComponentBar() {
@@ -14,7 +8,7 @@ export default function ComponentBar() {
         <CardTitle>Top 4 Highest Performers</CardTitle>
       </CardHeader>
       <CardContent>
-        <BarChart className="w-full aspect-[1/2] h-[200px] sm:h-[400px]" />
+        <BarChart className="w-full aspect-[1/2] h-[200px] sm:h-[400px] text-black" />
       </CardContent>
     </Card>
   );
@@ -25,16 +19,16 @@ function BarChart(props: any) {
     <div {...props}>
       <ResponsiveBar
         data={[
-          { name: "Aneesh", count: 111 },
-          { name: "Sharad", count: 157 },
-          { name: "Vashishte", count: 129 },
-          { name: "Akashat", count: 150 },
+          { name: "Aneesh", score: 111 },
+          { name: "Sharad", score: 157 },
+          { name: "Vashishte", score: 129 },
+          { name: "Akashat", score: 150 },
         ]}
-        keys={["count"]}
+        keys={["score"]}
         indexBy="name"
         margin={{ top: 0, right: 0, bottom: 40, left: 40 }}
         padding={0.3}
-        colors={["#2563eb"]}
+        colors={["#4325eb"]}
         axisBottom={{
           tickSize: 0,
           tickPadding: 16,

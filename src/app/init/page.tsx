@@ -19,14 +19,24 @@ function page() {
         {`hello ${currentLoggedInState.email.toLowerCase()} `}{" "}
         <span className="text-blue-500">{`sharad.nataraj@sjsu.edu  👋`}</span>
       </h1>
-      <Button
-        className="w-36 h-20 text-xl"
-        onClick={() => {
-          router.push("/questions");
-        }}
-      >
-        Start Quiz
-      </Button>
+      <div className="flex">
+        <Button
+          className="w-36 h-20 text-xl"
+          onClick={() => {
+            router.push("/questions");
+          }}
+        >
+          Start Quiz
+        </Button>
+        <Button
+          className="w-36 h-20 text-xl ml-5"
+          onClick={() => {
+            router.push("/student_dashboard/sharad");
+          }}
+        >
+          Dashboard
+        </Button>
+      </div>
     </div>
   );
 }
