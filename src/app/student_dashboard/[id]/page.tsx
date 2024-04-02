@@ -31,13 +31,13 @@ export default function Component({ params, searchParams }: any) {
     console.log(params.id);
     if (!params.id) {
       const res = await axios.get(
-        `http://127.0.0.1:5000/submissions/tot_progress?user_id=${id}`
+        `https://pmpcert.uc.r.appspot.com/submissions/tot_progress?user_id=${id}`
       );
       const data = await res.data;
       setScores(data);
     } else {
       const res = await axios.get(
-        `http://127.0.0.1:5000/submissions/tot_progress_email?email=${params.id}`
+        `https://pmpcert.uc.r.appspot.com/submissions/tot_progress_email?email=${params.id}`
       );
       const data = await res.data;
       setScores(data);

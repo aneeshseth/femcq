@@ -46,7 +46,7 @@ function page() {
   }, []);
   async function getQS() {
     const res = await axios.post(
-      "http://127.0.0.1:5000/questions/get-questions",
+      "https://pmpcert.uc.r.appspot.com/questions/get-questions",
       {
         user_id: id,
       }

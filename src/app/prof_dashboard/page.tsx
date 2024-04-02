@@ -40,7 +40,7 @@ export default function Component() {
       try {
         // Replace this with your actual API call
         const response = await fetch(
-          "http://127.0.0.1:5000/dashboard/top-scorers-for-class?class_id=12345"
+          "https://pmpcert.uc.r.appspot.com/dashboard/top-scorers-for-class?class_id=12345"
         );
         const data = await response.json();
         setTopScorers(data.top_scorers);
@@ -55,7 +55,7 @@ export default function Component() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://127.0.0.1:5000/dashboard/average-score-for-each-user?class_id=12345"
+          "https://pmpcert.uc.r.appspot.com/dashboard/average-score-for-each-user?class_id=12345"
         );
         const data = await response.json();
         setStudents(data.user_average_scores);

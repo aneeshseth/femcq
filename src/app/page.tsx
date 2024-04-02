@@ -21,7 +21,7 @@ function page() {
   const [id, setId] = useRecoilState(idState);
   const [emailLoggedIn, setEmailLoggedIn] = useRecoilState(emailState);
   async function practiceExamEnter() {
-    const response = await axios.post("http://127.0.0.1:5000/auth/login", {
+    const response = await axios.post("https://pmpcert.uc.r.appspot.com/auth/login", {
       email: email,
       password: password,
     });
