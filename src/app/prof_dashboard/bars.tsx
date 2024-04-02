@@ -1,29 +1,36 @@
-import { CardTitle, CardHeader, CardContent, Card } from "@/components/ui/card";
+import { useState, useEffect } from "react";
+import { useRecoilValue } from "recoil";
+import { emailSelectorState } from "../state/state";
+import { useRouter } from "next/router";
+import { Card, CardTitle, CardHeader, CardContent } from "@/components/ui/card";
 import { ResponsiveBar } from "@nivo/bar";
 
-export default function ComponentBar() {
+export default function ComponentBar({ topScorers }: any) {
   return (
     <Card className="w-full mt-10">
       <CardHeader>
-        <CardTitle>Top 4 Highest Performers</CardTitle>
+        <CardTitle>Highest Performers</CardTitle>
       </CardHeader>
       <CardContent>
-        <BarChart className="w-full aspect-[1/2] h-[200px] sm:h-[400px] text-black" />
+        <BarChart
+          className="w-full aspect-[1/2] h-[200px] sm:h-[400px] text-black"
+          topScorers={topScorers}
+        />
       </CardContent>
     </Card>
   );
 }
 
-function BarChart(props: any) {
+function BarChart({ topScorers, ...props }: any) {
+  const data = topScorers.map(({ email, total_score }: any) => ({
+    name: email,
+    score: total_score,
+  }));
+
   return (
     <div {...props}>
       <ResponsiveBar
-        data={[
-          { name: "Aneesh", score: 111 },
-          { name: "Sharad", score: 157 },
-          { name: "Vashishte", score: 129 },
-          { name: "Akashat", score: 150 },
-        ]}
+        data={data}
         keys={["score"]}
         indexBy="name"
         margin={{ top: 0, right: 0, bottom: 40, left: 40 }}
@@ -38,7 +45,7 @@ function BarChart(props: any) {
           tickValues: 4,
           tickPadding: 16,
         }}
-        gridYValues={4}
+        gridYValues={5}
         theme={{
           tooltip: {
             chip: {
@@ -52,7 +59,7 @@ function BarChart(props: any) {
           },
           grid: {
             line: {
-              stroke: "#f3f4f6",
+              stroke: "#193469",
             },
           },
         }}

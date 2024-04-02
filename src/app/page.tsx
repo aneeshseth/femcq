@@ -1,72 +1,101 @@
 "use client";
-import { SparklesCore } from "@/components/ui/sparkles";
 import { Button } from "@/components/ui/button";
-import { Spotlight } from "@/components/ui/Spotlight";
-import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import axios from "axios";
-import { useState } from "react";
-export default function Home() {
-  const router = useRouter();
+import {
+  emailSelectorState,
+  idSelectorState,
+  emailState,
+  idState,
+} from "@/app/state/state";
+import { useRecoilState } from "recoil";
+
+function page() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isRegister, setRegister] = useState(true);
+  const router = useRouter();
+  const [wsocket, setWS] = useState<WebSocket | null>(null);
+  const [id, setId] = useRecoilState(idState);
+  const [emailLoggedIn, setEmailLoggedIn] = useRecoilState(emailState);
   async function practiceExamEnter() {
-    if (email != "" && email == "sharad.natraj@sjsu.edu") {
+    const response = await axios.post("http://127.0.0.1:5000/auth/login", {
+      email: email,
+      password: password,
+    });
+    const status = await response.status;
+    const data = await response.data;
+    if (status.toString() == "200" && data.role == "Student") {
+      setId(data.user_id);
+      setEmailLoggedIn(data.user_email);
       router.push("/init");
-      return;
-    }
-    if (email != "" && email == "professor@sjsu.edu") {
+    } else if (status.toString() == "200") {
       router.push("/prof_dashboard");
     }
-    alert("please enter email!");
   }
   return (
-    <div className="min-h-screen flex justify-center items-center bg-black bg-opacity-96 antialiased">
-      <Spotlight className="-top-40 left-0 md:left-60 absolute" fill="white" />
-      <div className="p-4 max-w-7xl z-10 w-full pt-20 text-center text-white -mt-7">
-        <h1 className="md:text-8xl text-6xl lg:text-8xl font-bold">
-          Engineering Mgmt.
-        </h1>
-        <h2 className="md:text-2xl text-xl lg:text-2xl font-bold mt-5">
-          exam <span className="text-blue-500">practice.</span>
-        </h2>
-
-        <div className="w-full absolute inset-0 h-screen">
-          <SparklesCore
-            id="tsparticlesfullpage"
-            background="transparent"
-            minSize={0.6}
-            maxSize={1.4}
-            particleDensity={10}
-            className="w-full h-full"
-            particleColor="#FFFFFF"
-          />
-        </div>
-        <div style={{ zIndex: 20, position: "relative" }}>
-          <div className="flex justify-center">
-            <Input
-              placeholder="Email"
-              className="max-w-64 mt-5"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <Input
-              placeholder="Password"
-              type="password"
-              className="max-w-64 mt-5 ml-3"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+    <div>
+      <div className="h-full w-full dark:bg-white bg-ehite dark:bg-dot-white/[0.2] bg-dot-black/[0.2] relative flex items-center justify-center">
+        <div className="absolute pointer-events-none inset-0 flex items-center justify-center dark:bg-white bg-white[mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
+        <div className="antialiased">
+          <div className="absolute top-10 flex items-center">
+            <h1 className="text-2xl tracking-tight lg:text-3xl ml-5">
+              powered by <span className="text-green-600">Sequio.ai</span>
+            </h1>
           </div>
-          <Button
-            variant={"link"}
-            className="text-white mt-5 text-lg underline"
-            onClick={practiceExamEnter}
-          >
-            start practicing.
-          </Button>
+          <div className="mt-20"></div>
+          <div className="w-screen h-screen flex flex-col lg:flex-row">
+            <div className="lg:w-5/12 w-full flex justify-center items-center flex-col mt-20 lg:mt-0">
+              <h1 className="md:text-6xl text-5xl lg:text-7xl font-bold ml-5 lg:ml-10">
+                PMP Certification.
+              </h1>
+              <h2 className="md:text-2xl text-xl lg:text-2xl font-bold mt-5 ">
+                Ahmad Shaar.
+              </h2>
+              <div style={{ zIndex: 20, position: "relative" }}>
+                <div className="flex justify-center">
+                  <Input
+                    placeholder="Email"
+                    className=" mt-5 max-w-60"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    autoComplete="off"
+                  />
+                  <Input
+                    placeholder="Password"
+                    type="password"
+                    className="max-w-60 mt-5 ml-2"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </div>
+                <div className="w-full justify-center items-center flex mt-5">
+                  <Button
+                    className="mb-10 mt-3 text-lg bg-blue-600 ml-3 hover:bg-blue-400"
+                    onClick={() => {
+                      practiceExamEnter();
+                    }}
+                  >
+                    login
+                  </Button>
+                </div>
+              </div>
+            </div>
+            <div className="text-center lg:w-7/12 lg:block lg:flex justify-center items-center mr-20 lg:-mt-16 -mt-5 align-middle ">
+              <div>
+                <img
+                  src="https://miro.medium.com/v2/resize:fit:1051/1*YGhV_-FxYrmk5I10pZrsiw.jpeg"
+                  className="rounded-xl w-full lg:h-[500px] md:h-[550px] sm:h-[400px] h-[300px] ml-10"
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   );
 }
+
+export default page;

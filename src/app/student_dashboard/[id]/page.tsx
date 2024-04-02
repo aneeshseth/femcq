@@ -1,8 +1,22 @@
 "use client";
+import { emailSelectorState, idSelectorState } from "@/app/state/state";
 import { Button } from "@/components/ui/button";
 import { ResponsiveLine } from "@nivo/line";
 import { CSSProperties, useEffect, useState } from "react";
 import ClipLoader from "react-spinners/ClipLoader";
+import { useRecoilValue } from "recoil";
+import { useRouter } from "next/navigation";
+import axios from "axios";
+
+interface Scores {
+  message: string;
+  response: {
+    date: string;
+    difficultyScores: { [key: string]: number };
+    time: string;
+    totalScore: number;
+  }[];
+}
 export default function Component({ params, searchParams }: any) {
   const override: CSSProperties = {
     display: "block",
@@ -10,6 +24,29 @@ export default function Component({ params, searchParams }: any) {
     borderColor: "red",
   };
   let [loading, setLoading] = useState(true);
+  const email = useRecoilValue(emailSelectorState);
+  const id = useRecoilValue(idSelectorState);
+  const [scores, setScores] = useState<Scores>({ message: "", response: [] });
+  async function getScores() {
+    console.log(params.id);
+    if (!params.id) {
+      const res = await axios.get(
+        `http://127.0.0.1:5000/submissions/tot_progress?user_id=${id}`
+      );
+      const data = await res.data;
+      setScores(data);
+    } else {
+      const res = await axios.get(
+        `http://127.0.0.1:5000/submissions/tot_progress_email?email=${params.id}`
+      );
+      const data = await res.data;
+      setScores(data);
+    }
+  }
+  useEffect(() => {
+    getScores();
+  }, []);
+  const router = useRouter();
   let [color, setColor] = useState("#ffffff");
   useEffect(() => {
     setTimeout(() => {
@@ -33,7 +70,11 @@ export default function Component({ params, searchParams }: any) {
   return (
     <>
       <h1 className="text-3xl ml-5 mt-5 font-bold tracking-tight">
-        Hi {params.id} :)
+        Hi{" "}
+        <span className="text-green-600">
+          {email == "" ? params.id.split("%")[0] : email}
+        </span>{" "}
+        :)
       </h1>
       <div className="px-4 md:px-6 py-6 w-full space-y-4 justify-center h-screen items-center flex flex-col ">
         <div className="flex items-center space-x-4">
@@ -46,9 +87,9 @@ export default function Component({ params, searchParams }: any) {
             Project Score: 159
           </h1>
         </div>
-        <div className="w-full border border-dashed border-gray-200 dark:border-gray-800 rounded-lg p-6">
+        <div className="w-full border border-dashed border-black dark:border-gray-800 rounded-lg p-6">
           <div className="w-full aspect-[2/1] overflow-hidden rounded-lg border dark:border-gray-800">
-            <LineChart className="w-full aspect-[2/1] text-black" />
+            <LineChart scores={scores} />
           </div>
         </div>
       </div>
@@ -56,21 +97,30 @@ export default function Component({ params, searchParams }: any) {
   );
 }
 
-function LineChart(props: any) {
+function LineChart({
+  scores,
+}: {
+  scores: { message: string; response: Scores["response"] };
+}) {
+  interface finalD {
+    x: string;
+    y: number;
+  }
+  const [data, setData] = useState<finalD[]>([]);
+  useEffect(() => {
+    const finalData = scores.response.map((message) => ({
+      x: message.date,
+      y: message.totalScore,
+    }));
+    setData(finalData);
+  }, [scores]);
   return (
-    <div {...props}>
+    <div className="w-full aspect-[2/1] text-black">
       <ResponsiveLine
         data={[
           {
             id: "Desktop",
-            data: [
-              { x: "Week 1", y: 98 },
-              { x: "Week 2", y: 137 },
-              { x: "Week 3", y: 122 },
-              { x: "Week 4", y: 145 },
-              { x: "Week 5", y: 104 },
-              { x: "Week 6", y: 154 },
-            ],
+            data: data,
           },
         ]}
         margin={{ top: 10, right: 10, bottom: 40, left: 40 }}
@@ -94,6 +144,7 @@ function LineChart(props: any) {
         colors={["#eb25d7", "#e11d48"]}
         pointSize={6}
         useMesh={true}
+        curve="natural"
         gridYValues={6}
         theme={{
           tooltip: {
@@ -108,7 +159,7 @@ function LineChart(props: any) {
           },
           grid: {
             line: {
-              stroke: "#040d1f",
+              stroke: "#000000",
             },
           },
         }}

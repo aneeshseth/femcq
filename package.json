@@ -23,14 +23,15 @@
     "axios": "^1.6.7",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
-    "framer-motion": "^11.0.5",
+    "framer-motion": "^11.0.15",
     "lucide-react": "^0.331.0",
+    "mini-svg-data-uri": "^1.4.4",
     "next": "14.1.0",
     "react": "^18",
     "react-dom": "^18",
     "react-spinners": "^0.13.8",
     "recoil": "^0.7.7",
-    "tailwind-merge": "^2.2.1",
+    "tailwind-merge": "^2.2.2",
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
