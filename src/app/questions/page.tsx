@@ -93,13 +93,11 @@ function page() {
     };
     try {
       console.log(finalDataSent);
-      /*
       const response = await axios.post(
-        "http://127.0.0.1:5000/submissions/submit-response",
+        "https://pmpcert.uc.r.appspot.com/submissions/submit-response",
         finalDataSent
       );
       router.push(`/student_dashboard/${email}`);
-      */
     } catch (error) {
       console.error("Error submitting answers:", error);
     }
