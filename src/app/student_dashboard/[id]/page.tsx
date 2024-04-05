@@ -82,11 +82,6 @@ export default function Component({ params, searchParams }: any) {
             Your Scores / Weekly Quiz Progress
           </h1>
         </div>
-        <div className="absolute top-2 right-5 mb-10">
-          <h1 className="text-lg font-bold tracking-tight mb-10">
-            Project Score: 159
-          </h1>
-        </div>
         <div className="w-full border border-dashed border-black dark:border-gray-800 rounded-lg p-6">
           <div className="w-full aspect-[2/1] overflow-hidden rounded-lg border dark:border-gray-800">
             <LineChart scores={scores} />

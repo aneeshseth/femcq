@@ -12,7 +12,7 @@ import {
 } from "@/app/state/state";
 import { useRecoilState } from "recoil";
 
-function page() {
+function Page() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isRegister, setRegister] = useState(true);
@@ -20,21 +20,26 @@ function page() {
   const [wsocket, setWS] = useState<WebSocket | null>(null);
   const [id, setId] = useRecoilState(idState);
   const [emailLoggedIn, setEmailLoggedIn] = useRecoilState(emailState);
+
   async function practiceExamEnter() {
-    const response = await axios.post("https://pmpcert.uc.r.appspot.com/auth/login", {
-      email: email,
-      password: password,
-    });
+    const response = await axios.post(
+      "https://pmpcert.uc.r.appspot.com/auth/login",
+      {
+        email: email,
+        password: password,
+      }
+    );
     const status = await response.status;
     const data = await response.data;
-    if (status.toString() == "200" && data.role == "Student") {
+    if (status.toString() === "200" && data.role === "Student") {
       setId(data.user_id);
       setEmailLoggedIn(data.user_email);
       router.push("/init");
-    } else if (status.toString() == "200") {
+    } else if (status.toString() === "200") {
       router.push("/prof_dashboard");
     }
   }
+
   return (
     <div>
       <div className="h-full w-full dark:bg-white bg-ehite dark:bg-dot-white/[0.2] bg-dot-black/[0.2] relative flex items-center justify-center">
@@ -78,16 +83,33 @@ function page() {
                       practiceExamEnter();
                     }}
                   >
-                    login
+                    Login
                   </Button>
                 </div>
+                <p className="text-center -mt-5">
+                  By logging in, you agree to our{" "}
+                  <a
+                    href="https://www.adobe.com/privacy/student-policy.html"
+                    className="underline"
+                  >
+                    Privacy Policy
+                  </a>{" "}
+                  and{" "}
+                  <a
+                    href="https://www.adobe.com/content/dam/cc/en/legal/servicetou/Adobe-EDU-Terms-en_US-20210701.pdf"
+                    className="underline"
+                  >
+                    Terms and Conditions
+                  </a>
+                  .
+                </p>
               </div>
             </div>
             <div className="text-center lg:w-7/12 lg:block lg:flex justify-center items-center mr-20 lg:-mt-16 -mt-5 align-middle ">
               <div>
                 <img
                   src="https://miro.medium.com/v2/resize:fit:1051/1*YGhV_-FxYrmk5I10pZrsiw.jpeg"
-                  className="rounded-xl w-full lg:h-[500px] md:h-[550px] sm:h-[400px] h-[300px] ml-10"
+                  className="rounded-xl w-full lg:h-[500px] md:h-[550px] sm:h-[400px] h-[300px] ml-10 mt-10"
                 />
               </div>
             </div>
@@ -98,4 +120,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;
